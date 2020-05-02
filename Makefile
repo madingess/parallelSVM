@@ -1,12 +1,12 @@
 run: jar
 	hadoop fs -rm -f -r  /user/cloudera/parallelSVM/output
-	hadoop jar parralelSVM.jar org.myorg.parallelSVM /user/cloudera/parallelSVM/input /user/cloudera/parallelSVM/output
+	hadoop jar parallelSVM.jar org.myorg.ParallelSVM /user/cloudera/parallelSVM/input /user/cloudera/parallelSVM/output
 
 compile: build/org/myorg/ParallelSVM.class
 
 jar: parallelSVM.jar
 
-part.jar: build/org/myorg/ParallelSVM.class
+parallelSVM.jar: build/org/myorg/ParallelSVM.class
 	jar -cvf parallelSVM.jar -C build/ .
 
 build/org/myorg/ParallelSVM.class: ParallelSVM.java

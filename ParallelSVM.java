@@ -20,15 +20,15 @@ import org.apache.log4j.Logger;
 
 public class ParallelSVM extends Configured implements Tool {
 
-  private static final Logger LOG = Logger.getLogger(Part1.class);
+  private static final Logger LOG = Logger.getLogger(ParallelSVM.class);
 
   public static void main(String[] args) throws Exception {
-    int res = ToolRunner.run(new Part1(), args);
+    int res = ToolRunner.run(new ParallelSVM(), args);
     System.exit(res);
   }
 
   public int run(String[] args) throws Exception {
-    Job job = Job.getInstance(getConf(), "part1");
+    Job job = Job.getInstance(getConf(), "parallelSVM");
     job.setJarByClass(this.getClass());
     // Use TextInputFormat, the default unless job.setInputFormatClass is used
     FileInputFormat.addInputPath(job, new Path(args[0]));
