@@ -1,4 +1,4 @@
-run: jar 
+run: jar
 	hadoop fs -rm -f -r  /user/cloudera/parallelSVM/output
 	hadoop jar parallelSVM.jar org.myorg.ParallelSVM /user/cloudera/parallelSVM/input /user/cloudera/parallelSVM/output
 
