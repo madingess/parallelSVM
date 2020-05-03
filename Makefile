@@ -17,10 +17,10 @@ clean:
 	rm -rf build parallelSVM.jar 
 
 putTestData: mkdirs
-	hadoop fs -put inputs/test1.csv /user/cloudera/parallelSVM/input
+	hadoop fs -put inputs/test1.data /user/cloudera/parallelSVM/input
 
 putFullData: mkdirs
-	hadoop fs -put inputs/FILENAME.csv /user/cloudera/parallelSVM/input
+	hadoop fs -put inputs/adult.data /user/cloudera/parallelSVM/input
 
 mkdirs:
 	hadoop fs -rm -f -r /user/cloudera/parallelSVM/input
