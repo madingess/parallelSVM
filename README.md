@@ -11,6 +11,10 @@ Spring 2020 CS626 Final Project by Michael Dingess Tanner Coffman
 	bash Anaconda2-2019.10-Linux-x86_64.sh
 
  Read and agree to the license agreement. Confirm the default location and initial configuration.
+
+ Remove the installation file:
+
+	rm Anaconda2-2019.10-Linux-x86_64.sh
 	
 
 # Setup with Anaconda
