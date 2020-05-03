@@ -12,7 +12,7 @@ MU = 0.1
 
 
 #def define_args(arg_parser):
-    """Defines program arguments""""""
+"""Defines program arguments""""""
     arg_parser.description = 'Implementation of the iterative SVM machine ' \
                              'learning algorithm leveraging the hadoop ' \
                              'MapReduce system for parallelism.'
