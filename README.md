@@ -51,16 +51,6 @@ Spring 2020 CS626 Final Project by Michael Dingess Tanner Coffman
 
  Then close and reopen the shell.
 
-# Setup
-
-Install pip with:
-
-`sudo yum -y install pip`
-
-Instal the MapReduce package with:
-
-`sudo pip install mrjob`
-
 
 # Execution
 
@@ -68,7 +58,7 @@ Instal the MapReduce package with:
 
 	source activate p27parallelsvm
 
- Use the Makefile to put the adult dataset data in the hdfs:
+ Use the Makefile to put the adult dataset data in the hdfs: (this may not be necessary)
 
 	make putFullData
 
