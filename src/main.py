@@ -84,7 +84,7 @@ class MRIterativeSVM(MRJob):
         category = extract_category(line_array)
         yield category, features
 
-    def mapper(self, key, value):
+    def mapper(self, line_num, line):
         """
             Mapper class.
             Variables as in "Incremental Support Vector Machine Classification":
@@ -96,6 +96,9 @@ class MRIterativeSVM(MRJob):
             Maps a feature line into a tuple with the values to be used by
              the reducer. We perform as much computation in the mapper as possible.
         """
+        # Extract category and features from input line
+        key, value = self.transform_input(line_num, line)
+
         num_training_features = len(value)
 
         features_matrix = np.matrix(
@@ -139,9 +142,9 @@ class MRIterativeSVM(MRJob):
         result = sum_ETE.I * sum_ETDe
         yield key, str(result.tolist())
 
-    def steps(self):
-        return [self.mr(mapper=self.transform_input),
-                self.mr(mapper=self.mapper, reducer=self.reducer)]
+#    def steps(self):
+#        return [self.mr(mapper=self.transform_input),
+#                self.mr(mapper=self.mapper, reducer=self.reducer)]
 
 
 """

@@ -3,7 +3,8 @@
 #	hadoop jar parallelSVM.jar org.myorg.ParallelSVM /user/cloudera/parallelSVM/input /user/cloudera/parallelSVM/output
 
 run: 
-	python2 src/main.py /user/cloudera/parallelSVM/input/ /user/cloudera/parallelSVM/output/
+	python2 src/main.py inputs/test1.data outputs/
+#	python2 src/main.py /user/cloudera/parallelSVM/input/ /user/cloudera/parallelSVM/output/
 
 compile: build/org/myorg/ParallelSVM.class
 
