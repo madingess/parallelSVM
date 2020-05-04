@@ -34,16 +34,20 @@ def numerify_feature(feature, index):
     if feature == '?':
         return 0.0
 
-    if index in CATEGORICAL_INDECES:
-        return {
-            WORK_CLASS_INDEX: WORK_CLASS[feature],
-            EDUCATION_INDEX: EDUCATION[feature],
-            MARITAL_STATUS_INDEX: MARITAL_STATUS[feature],
-            OCCUPATION_INDEX: OCCUPATION[feature],
-            RELATIONSHIP_INDEX: RELATIONSHIP[feature],
-            RACE_INDEX: RACE[feature],
-            SEX_INDEX: SEX[feature]
-        }.get(index, float(feature))   # Switch statement replaced, default: feature
+    elif index == WORK_CLASS_INDEX:
+        return WORK_CLASS[feature]
+    elif index == EDUCATION_INDEX:
+        return EDUCATION[feature]
+    elif index == MARITAL_STATUS_INDEX:
+        return MARITAL_STATUS[feature]
+    elif index == OCCUPATION_INDEX:
+        return OCCUPATION[feature]
+    elif index == RELATIONSHIP_INDEX:
+        return RELATIONSHIP[feature]
+    elif index == RACE_INDEX:
+        return RACE[feature]
+    elif index == SEX_INDEX:
+        return SEX[feature]
 
     return float(feature)
 
