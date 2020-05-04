@@ -1,52 +1,21 @@
 #!/usr/bin/env python2.7
 
 import argparse
-import base64                   # The two used for encodings multiple values
-import cPickle as pickle        #  into one, to be passed from mapper to reducer
-from mrjob.job import MRJob     # Extended to make a mr job
-import numpy as np              # Useful matrix functionality
-
+import base64  # The two used for encodings multiple values
+import cPickle as pickle  # into one, to be passed from mapper to reducer
+from mrjob.job import MRJob  # Extended to make a mr job
+import numpy as np  # Useful matrix functionality
 
 # CONSTANTS
 MU = 0.1
 
 
-#def define_args(arg_parser):
-"""Defines program arguments""""""
-    arg_parser.description = 'Implementation of the iterative SVM machine ' \
-                             'learning algorithm leveraging the hadoop ' \
-                             'MapReduce system for parallelism.'
-
-    arg_parser.add_argument('times_csv', nargs=1, type=str,
-                            help='CSV file of times by row. Each row has one'
-                                 'encoding for one instance and one time.')
-    arg_parser.add_argument('encoding_names', nargs='*', type=str,
-                            help='name of each encoding as it appears in the'
-                                 'CSV.')
-    arg_parser.add_argument('-o', '--observe_first_line', default=False,
-                            action='store_false',
-                            help='Observes first line of csv, default false.')
-    arg_parser.add_argument('-q', '--quiet', default=False, action='store_true',
-                            help='Run in quiet mode. Prints less stuff.')
-    arg_parser.add_argument('-t', '--timeout', type=int, default=200,
-                            help='Timeout length for Clingo (sec). '
-                                 'Default 200.')
-
-
-class ParallelSVM:
-
-    def __init__(self, arguments):
-        # Apply arguments to Setting class, to be passed to transformer
-        self.setting = Setting(arguments)
-"""
-
-
-
-#TODO: Probably remove this method when moving to categorical features.
+# TODO: Probably remove this method when moving to categorical features.
 def numerify_feature(feature):
     if feature == '?':
         feature = 0.0
     return float(feature)
+
 
 def extract_features(array):
     """
@@ -54,9 +23,10 @@ def extract_features(array):
         Return the features of the line (all but the last value) with
             numerical values substituted for categorical.
     """
-    #TODO: One-Hot encoding of categorical features
+    # TODO: One-Hot encoding of categorical features
     features = array[1:-1]
     return [numerify_feature(f) for f in features]
+
 
 def extract_category(line_array):
     """
@@ -75,6 +45,7 @@ class MRIterativeSVM(MRJob):
         Implementation of the iterative SVM machine learning algorithm
          leveraging the Hadoop MapReduce system for parallel execution.
     """
+
     def __init__(self, *args, **kwargs):
         super(MRIterativeSVM, self).__init__(*args, **kwargs)
 
@@ -111,7 +82,7 @@ class MRIterativeSVM(MRJob):
 
         # Encode tuple of two values needed by the reducer into one value for mr
         values_tuple = base64.b64encode(pickle.dumps((E.T * E,
-                                                E.T * training_classes_matrix * identity_matrix)))
+                                                      E.T * training_classes_matrix * identity_matrix)))
 
         # a key is needed by mr, but not for out application
         yield "outputkey", values_tuple
@@ -142,22 +113,6 @@ class MRIterativeSVM(MRJob):
         result = sum_ETE.I * sum_ETDe
         yield key, str(result.tolist())
 
-#    def steps(self):
-#        return [self.mr(mapper=self.transform_input),
-#                self.mr(mapper=self.mapper, reducer=self.reducer)]
-
-
-"""
-parser = argparse.ArgumentParser()
-define_args(parser)
-args = parser.parse_args()
-if not args.encoding:  # close if no input encodings are given
-    parser.print_help()
-    sys.exit(0)
-
-aagg = AutomatedAggregator(args)
-aagg.run()
-"""
 
 if __name__ == '__main__':
     MRIterativeSVM.run()
