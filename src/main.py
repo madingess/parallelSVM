@@ -29,6 +29,7 @@ NATIVE_COUNTRY = {'United-States': 1.0, 'Cambodia': 2.0, 'England': 3.0, 'Puerto
 
 
 def numerify_feature(feature, index):
+    feature = feature.strip()
     if feature == '?':
         return 0.0
     else:
