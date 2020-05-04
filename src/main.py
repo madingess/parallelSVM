@@ -48,6 +48,8 @@ def numerify_feature(feature, index):
         return RACE[feature]
     elif index == SEX_INDEX:
         return SEX[feature]
+    elif index == NATIVE_COUNTRY_INDEX:
+        return NATIVE_COUNTRY[feature]
 
     return float(feature)
 
