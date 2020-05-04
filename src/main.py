@@ -18,6 +18,7 @@ RELATIONSHIP_INDEX = 7
 RACE_INDEX = 8
 SEX_INDEX = 9
 NATIVE_COUNTRY_INDEX = 13
+CATEGORICAL_INDECES = [WORK_CLASS_INDEX, EDUCATION_INDEX, MARITAL_STATUS_INDEX, OCCUPATION_INDEX, RELATIONSHIP_INDEX, RACE_INDEX, SEX_INDEX, NATIVE_COUNTRY_INDEX]
 WORK_CLASS = {'Private': 1.0, 'Self-emp-not-inc': 2.0, 'Self-emp-inc': 3.0, 'Federal-gov': 4.0, 'Local-gov': 5.0, 'State-gov': 6.0, 'Without-pay': 7.0, 'Never-worked': 8.0}
 EDUCATION = {'Bachelors': 1.0, 'Some-college': 2.0, '11th': 3.0, 'HS-grad': 4.0, 'Prof-school': 5.0, 'Assoc-acdm': 6.0, 'Assoc-voc': 7.0, '9th': 8.0, '7th-8th': 9.0, '12th': 10.0, 'Masters': 11.0, '1st-4th': 12.0, '10th': 13.0, 'Doctorate': 14.0, '5th-6th': 15.0, 'Preschool': 16.0}
 MARITAL_STATUS = {'Married-civ-spouse': 1.0, 'Divorced': 2.0, 'Never-married': 3.0, 'Separated': 4.0, 'Widowed': 5.0, 'Married-spouse-absent': 6.0, 'Married-AF-spouse': 7.0}
@@ -32,7 +33,8 @@ def numerify_feature(feature, index):
     feature = feature.strip()
     if feature == '?':
         return 0.0
-    else:
+
+    if index in CATEGORICAL_INDECES:
         return {
             WORK_CLASS_INDEX: WORK_CLASS[feature],
             EDUCATION_INDEX: EDUCATION[feature],
@@ -41,7 +43,7 @@ def numerify_feature(feature, index):
             RELATIONSHIP_INDEX: RELATIONSHIP[feature],
             RACE_INDEX: RACE[feature],
             SEX_INDEX: SEX[feature]
-        }.get(index, feature)   # Switch statement replaced, default: feature
+        }.get(index, float(feature))   # Switch statement replaced, default: feature
 
     return float(feature)
 
@@ -52,7 +54,7 @@ def extract_features(line_array):
         Return the features of the line (all but the last value) with
             numerical values substituted for categorical.
     """
-    features = line_array[1:-1]
+    features = line_array[:-1]
     return [numerify_feature(features[i], i) for i in range(len(features))]
 
 
