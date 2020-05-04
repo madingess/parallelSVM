@@ -80,7 +80,7 @@ def transform_input(_, line):
     line_array = line.split(',')
     features = extract_features(line_array)
     category = extract_category(line_array)
-    yield category, features
+    return category, features
 
 
 class MRIterativeSVM(MRJob):
