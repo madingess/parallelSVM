@@ -1,24 +1,11 @@
-#run: jar
-#	hadoop fs -rm -f -r  /user/cloudera/parallelSVM/output
-#	hadoop jar parallelSVM.jar org.myorg.ParallelSVM /user/cloudera/parallelSVM/input /user/cloudera/parallelSVM/output
-
 run: 
 	python2 src/main.py inputs/test1.data outputs/
 #	python2 src/main.py /user/cloudera/parallelSVM/input/ /user/cloudera/parallelSVM/output/
 
-compile: build/org/myorg/ParallelSVM.class
 
-jar: parallelSVM.jar
-
-parallelSVM.jar: build/org/myorg/ParallelSVM.class
-	jar -cvf parallelSVM.jar -C build/ .
-
-build/org/myorg/ParallelSVM.class: ParallelSVM.java
-	mkdir -p build
-	javac -cp /usr/lib/hadoop/*:/usr/lib/hadoop-mapreduce/* ParallelSVM.java -d build -Xlint
-
-clean:
-	rm -rf build parallelSVM.jar 
+# It is unknown to me whether the input is supposed to come from the local fs or the
+#  hdfs. The application seems to only work when invoking from the local fs. As
+#  such, the commands below are not necessary.
 
 putTestData: mkdirs
 	hadoop fs -put inputs/test1.data /user/cloudera/parallelSVM/input
