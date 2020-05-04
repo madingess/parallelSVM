@@ -37,13 +37,19 @@ Spring 2020 CS626 Final Project by Michael Dingess Tanner Coffman
 
 	/home/cloudera/anaconda2/bin/conda create -n p27parallelsvm python=2.7
 
-	/home/cloudera/anaconda2/bin/activate p27parallelsvm
+	source activate p27parallelsvm
 
 	/home/cloudera/anaconda2/bin/conda install -c conda-forge mrjob
 
 	/home/cloudera/anaconda2/bin/conda install numpy
 
  Confirm [y] any new packages that will be installed.
+
+ NOTE: If the `source activate` command does not have an effect, you must initialize conda2 via:
+
+	sudo /home/cloudera/anaconda2/bin/conda init
+
+ Then close and reopen the shell.
 
 # Setup
 
