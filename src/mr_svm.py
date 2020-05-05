@@ -149,3 +149,7 @@ class MRIterativeSVM(MRJob):
 
         result = sum_ETE.I * sum_ETDe
         yield key, str(result.tolist())
+
+
+if __name__ == '__main__':
+    MRIterativeSVM.run()

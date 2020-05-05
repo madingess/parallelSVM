@@ -84,7 +84,9 @@ with open(train_filename, 'w') as train_writer:
 print("Training Iterative SVM with MapReduce...")
 #alg = MRIterativeSVM(train_filename)
 #abc = alg.run()
-alg_output = subprocess.check_output(["python2", "mr_svm.py", train_filename],
-                                     stderr=subprocess.STDOUT).decode(
-    'utf-8').split("\n")
+
+alg_output = subprocess.check_output(["python", "src/mr_svm.py", train_filename],
+                                     stderr=subprocess.STDOUT)#.decode(
+#    'utf-8').split("\n")
+print("alg_output:")
 print(alg_output)
