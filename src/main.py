@@ -71,7 +71,7 @@ with open(input_filename, 'r') as all_data:
 # Split input data into training and test files
 if debug:
     print("Splitting input into training and testing files...")
-with open(test_filename, 'w') as test_writer:
+with open(test_filename, 'w') as test_writer:     # TODO: Probably remove this because these can be contianed within this process
     for test_line in lines[:int(num_lines * split_ratio)]:
         test_writer.write(test_line)
 with open(train_filename, 'w') as train_writer:
@@ -82,11 +82,16 @@ with open(train_filename, 'w') as train_writer:
 # Invoke MRIterativeSVM implementation on the training data
 # Run in new process to capture output values.
 print("Training Iterative SVM with MapReduce...")
-#alg = MRIterativeSVM(train_filename)
-#abc = alg.run()
-
 alg_output = subprocess.check_output(["python", "src/mr_svm.py", train_filename],
-                                     stderr=subprocess.STDOUT)#.decode(
-#    'utf-8').split("\n")
-print("alg_output:")
-print(alg_output)
+                                     stderr=subprocess.STDOUT)
+if debug:
+    print("MapReduce Job Output:")
+    print(alg_output)
+
+
+# Parse algorithm parameters
+print(alg_output.split())
+print(alg_output.split()[2].split("\""))
+mr_output_array = alg_output.split()[2].split("\"")[1]
+weights = []
+

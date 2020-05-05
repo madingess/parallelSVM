@@ -151,5 +151,6 @@ class MRIterativeSVM(MRJob):
         yield key, str(result.tolist())
 
 
+# Run the algorithm if this file is invoked directly
 if __name__ == '__main__':
     MRIterativeSVM.run()
