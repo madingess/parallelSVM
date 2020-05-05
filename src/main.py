@@ -1,6 +1,7 @@
 #!/usr/bin/env python2.7
 
 import argparse
+import subprocess
 from mr_svm import MRIterativeSVM
 
 
@@ -58,6 +59,8 @@ if debug:
 
 
 # Get input data
+if debug:
+    print("Reading input file...")
 num_lines = 0
 lines = []
 with open(input_filename, 'r') as all_data:
@@ -66,6 +69,8 @@ with open(input_filename, 'r') as all_data:
         lines.append(line)
 
 # Split input data into training and test files
+if debug:
+    print("Splitting input into training and testing files...")
 with open(test_filename, 'w') as test_writer:
     for test_line in lines[:int(num_lines * split_ratio)]:
         test_writer.write(test_line)
@@ -75,8 +80,11 @@ with open(train_filename, 'w') as train_writer:
 
 
 # Invoke MRIterativeSVM implementation on the training data
-alg = MRIterativeSVM(train_filename)
-abc = alg.run()
-
-print("Return of run: ")
-print(abc)
+# Run in new process to capture output values.
+print("Training Iterative SVM with MapReduce...")
+#alg = MRIterativeSVM(train_filename)
+#abc = alg.run()
+alg_output = subprocess.check_output(["python2", "mr_svm.py", train_filename],
+                                     stderr=subprocess.STDOUT).decode(
+    'utf-8').split("\n")
+print(alg_output)
