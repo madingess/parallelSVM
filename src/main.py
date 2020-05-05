@@ -110,15 +110,20 @@ percent_train_correct = 0.0
 #TODO: track testing time
 num_test_correct = 0
 for test_line in test_set:
-    feature_values = transform_input("", test_line)
+    true_category, feature_values = transform_input("", test_line)
 
     result = 0.0
     for i in range(len(feature_values)):
         result += feature_values[i] * weights[i]
 
-    print(" line result: ", result)
+    print(" line result: ", result, "  cat:", true_category)
 
     if result >= 1.0:
+        predicted_category = 1.0
+    else:
+        predicted_category = -1.0
+
+    if predicted_category == true_category:
         num_test_correct += 1
 
 percent_test_correct = 0.0
