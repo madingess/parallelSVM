@@ -3,6 +3,7 @@
 import argparse
 import subprocess
 import re
+import time
 from helper_functions import transform_input
 
 
@@ -35,6 +36,10 @@ def define_args(arg_parser):
                             help='Observes first line of csv, default false.')
     arg_parser.add_argument('-d', '--debug', default=False, action='store_true',
                             help='Run in verbose mode. Prints more stuff.')
+
+
+# Record total time to run application
+total_time_start = time.time()
 
 
 # Parse command line arguments
@@ -83,8 +88,10 @@ with open(train_filename, 'w') as train_writer:
 # Run in new process to capture output values.
 print("Training Iterative SVM with MapReduce...")
 #TODO: track training time
+alg_training_time_start = time.time()
 alg_output = subprocess.check_output(["python", "src/mr_svm.py", train_filename],
                                      stderr=subprocess.STDOUT)
+alg_training_time = time.time() - alg_training_time_start
 if debug:
     print("\nMapReduce Job Output:")
     print(alg_output)
@@ -100,14 +107,31 @@ if debug:
     print(weights)
 
 
-#TODO: Evaluate train set using weight parameters
+# Evaluate train set using weight parameters
+train_eval_time_start = time.time()
+num_train = len(train_set)
 num_train_correct = 0
+for train_line in train_set:
+    true_category, feature_values = transform_input("", train_line)
 
-percent_train_correct = 0.0
+    result = 0.0
+    for i in range(len(feature_values)):
+        result += feature_values[i] * weights[i]
+
+    if result >= 1.0:
+        predicted_category = 1.0
+    else:
+        predicted_category = -1.0
+    if predicted_category == true_category:
+        num_train_correct += 1
+
+percent_train_correct = float(num_train_correct) / float(num_train) * 100
+train_eval_time = time.time() - train_eval_time_start
 
 
 # Evaluate test set using weight parameters
-#TODO: track testing time
+test_eval_time_start = time.time()
+num_test = len(test_set)
 num_test_correct = 0
 for test_line in test_set:
     true_category, feature_values = transform_input("", test_line)
@@ -116,21 +140,21 @@ for test_line in test_set:
     for i in range(len(feature_values)):
         result += feature_values[i] * weights[i]
 
-    print(" line result: ", result, "  cat:", true_category)
-
     if result >= 1.0:
         predicted_category = 1.0
     else:
         predicted_category = -1.0
-
     if predicted_category == true_category:
         num_test_correct += 1
 
-percent_test_correct = 0.0
+percent_test_correct = float(num_test_correct) / float(num_test) * 100
+test_eval_time = time.time() - test_eval_time_start
 
+
+# Record total time to run application, excluding statistic printing
+total_time = time.time() - total_time_start
 
 # Print statistics
-#TODO: Give training, testing, and total time statistics
 #TODO: Rounding of percent values
 print("\nResults")
 print("(", num_lines - int(num_lines * split_ratio), " train, ",
@@ -139,3 +163,9 @@ print("Total correct on training set: ", num_train_correct, "(",
       percent_train_correct, "%)")
 print("Total correct on testing set: ", num_test_correct, "(",
       percent_test_correct, "%)")
+
+print("\nComputation Time")
+print("Algorithm training time: ", alg_training_time)
+print("Training set evaluation time: ", train_eval_time)
+print("Testing set evaluation time: ", test_eval_time)
+print("Total system runtime: ", total_time)
