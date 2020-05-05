@@ -76,5 +76,7 @@ with open(train_filename, 'w') as train_writer:
 
 # Invoke MRIterativeSVM implementation on the training data
 alg = MRIterativeSVM(train_filename)
-alg.run()
+abc = alg.run()
 
+print("Return of run: ")
+print(abc)
