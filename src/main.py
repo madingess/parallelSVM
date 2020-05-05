@@ -3,7 +3,7 @@
 import argparse
 import subprocess
 import re
-from mr_svm import MRIterativeSVM
+from helper_functions import transform_input
 
 
 def define_args(arg_parser):
@@ -72,41 +72,65 @@ with open(input_filename, 'r') as all_data:
 # Split input data into training and test files
 if debug:
     print("Splitting input into training and testing files...")
-with open(test_filename, 'w') as test_writer:     # TODO: Probably remove this because these can be contianed within this process
-    for test_line in lines[:int(num_lines * split_ratio)]:
-        test_writer.write(test_line)
+test_set = lines[:int(num_lines * split_ratio)]
+train_set = lines[int(num_lines * split_ratio):]
 with open(train_filename, 'w') as train_writer:
-    for train_line in lines[int(num_lines * split_ratio):]:
+    for train_line in train_set:
         train_writer.write(train_line)
 
 
 # Invoke MRIterativeSVM implementation on the training data
 # Run in new process to capture output values.
 print("Training Iterative SVM with MapReduce...")
+#TODO: track training time
 alg_output = subprocess.check_output(["python", "src/mr_svm.py", train_filename],
                                      stderr=subprocess.STDOUT)
 if debug:
-    print("MapReduce Job Output:")
+    print("\nMapReduce Job Output:")
     print(alg_output)
 
 
 # Parse algorithm parameters
-#print(alg_output)
-#print(alg_output.split("\n"))
-#print(alg_output.split("\n")[-3].split("\""))
 mr_output_str_array = alg_output.split("\n")[-3].split("\"")[3]
-print(mr_output_str_array)
-
-print("")
-
 weight_str_arrays = re.findall('\[.+?\]', mr_output_str_array[1:-1])
-print(weight_str_arrays)
+weights = [float(weight_str_array[1:-1])
+           for weight_str_array in weight_str_arrays]
+if debug:
+    print("\nAlgorithm Output Weights:")
+    print(weights)
 
-print("")
 
-weights = [float(wsa[1:-1]) for wsa in weight_str_arrays]
-print(weights)
+#TODO: Evaluate train set using weight parameters
+num_train_correct = 0
+
+percent_train_correct = 0.0
 
 
-weights = []
+# Evaluate test set using weight parameters
+#TODO: track testing time
+num_test_correct = 0
+for test_line in test_set:
+    feature_values = transform_input("", test_line)
 
+    result = 0.0
+    for i in range(len(feature_values)):
+        result += feature_values[i] * weights[i]
+
+    print(" line result: ", result)
+
+    if result >= 1.0:
+        num_test_correct += 1
+
+percent_test_correct = 0.0
+
+
+# Print statistics
+#TODO: Give training, testing, and total time statistics
+#TODO: Rounding of percent values
+print("\nResults")
+print("(", num_lines - int(num_lines * split_ratio), " train, ",
+      int(num_lines * split_ratio), " test)")
+print("Total correct on training set: ", num_train_correct, "(",
+      percent_train_correct, "%)")
+print("Total correct on testing set: ", num_test_correct, "(",
+      percent_test_correct, "%)")
