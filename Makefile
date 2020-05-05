@@ -1,5 +1,6 @@
 run: 
-	python2 src/main.py inputs/test1.data outputs/
+	python2 src/main.py inputs/adult.data
+#	python2 src/main.py inputs/test1.data outputs/
 #	python2 src/main.py /user/cloudera/parallelSVM/input/ /user/cloudera/parallelSVM/output/
 
 
