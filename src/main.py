@@ -87,7 +87,6 @@ with open(train_filename, 'w') as train_writer:
 # Invoke MRIterativeSVM implementation on the training data
 # Run in new process to capture output values.
 print("Training Iterative SVM with MapReduce...")
-#TODO: track training time
 alg_training_time_start = time.time()
 alg_output = subprocess.check_output(["python", "src/mr_svm.py", train_filename],
                                      stderr=subprocess.STDOUT)
@@ -152,7 +151,6 @@ test_eval_time = time.time() - test_eval_time_start
 total_time = time.time() - total_time_start
 
 # Print statistics
-#TODO: Rounding of percent values
 print("\nTrained algorithm weights")
 print weights
 
