@@ -2,6 +2,7 @@
 
 import argparse
 import subprocess
+import re
 from mr_svm import MRIterativeSVM
 
 
@@ -90,8 +91,22 @@ if debug:
 
 
 # Parse algorithm parameters
-print(alg_output.split())
-print(alg_output.split()[2].split("\""))
-mr_output_array = alg_output.split()[2].split("\"")[1]
+#print(alg_output)
+#print(alg_output.split("\n"))
+#print(alg_output.split("\n")[-3].split("\""))
+mr_output_str_array = alg_output.split("\n")[-3].split("\"")[3]
+print(mr_output_str_array)
+
+print("")
+
+weight_str_arrays = re.findall('\[.+?\]', mr_output_str_array[1:-1])
+print(weight_str_arrays)
+
+print("")
+
+weights = [float(wsa[1:-1]) for wsa in weight_str_arrays]
+print(weights)
+
+
 weights = []
 
