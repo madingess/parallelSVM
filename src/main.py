@@ -153,19 +153,20 @@ total_time = time.time() - total_time_start
 
 # Print statistics
 #TODO: Rounding of percent values
-print("\nAlgorithm trained weights")
+print("\nTrained algorithm weights")
 print weights
 
 print("\nResults")
-print "(", num_lines - int(num_lines * split_ratio), " train, ",
+print "(", num_lines - int(num_lines * split_ratio), " train, ", \
       int(num_lines * split_ratio), " test)"
-print "Total correct on training set: ", num_train_correct, "(",
+print "Total correct on training set: ", num_train_correct, "(", \
       percent_train_correct, "%)"
-print "Total correct on testing set: ", num_test_correct, "(",
+print "Total correct on testing set: ", num_test_correct, "(", \
       percent_test_correct, "%)"
 
 print("\nComputation Time")
-print "Algorithm training time: ", alg_training_time
-print "Training set evaluation time: ", train_eval_time
-print "Testing set evaluation time: ", test_eval_time
-print "Total system runtime: ", total_time
+print "Algorithm training time: ", alg_training_time, "s"
+print "Training set evaluation time: ", train_eval_time, "s"
+print "Testing set evaluation time: ", test_eval_time, "s"
+print "Total system runtime: ", total_time, "s"
+print("")
